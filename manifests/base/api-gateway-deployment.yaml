@@ -23,7 +23,7 @@ spec:
       containers:
         - name: api-gateway
           image: ai-gateway:v21
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
           livenessProbe:

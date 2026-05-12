@@ -15,6 +15,7 @@ class ChatRequest(BaseModel):
    max_tokens: Optional[int] = 1000
    private: Optional[bool] = False
    max_cost: Optional[float] = None
+   provider: Optional[str] = None
 
 
 class ChatChoice(BaseModel):
