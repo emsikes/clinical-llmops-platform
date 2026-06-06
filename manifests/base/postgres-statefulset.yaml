@@ -46,5 +46,5 @@ spec:
             periodSeconds: 5
       volumes:
         - name: postgres-data
-          PresistentVolumeClaim:
+          persistentVolumeClaim:
             claimName: postgres-data
