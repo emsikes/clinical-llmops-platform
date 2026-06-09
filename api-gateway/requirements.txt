@@ -3,3 +3,6 @@ uvicorn==0.40.0
 redis==5.0.0
 httpx==0.28.1
 pydantic
+sqlalchemy[asyncio]==2.0.41
+asyncpg==0.30.0
+alembic==1.15.2
