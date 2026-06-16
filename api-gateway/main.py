@@ -1,14 +1,23 @@
 import os
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
 import redis
 import json
+from contextlib import asynccontextmanager
+from sqlalchemy import select
 
-from models import ChatRequest, ChatResponse
+from models import ChatRequest, ChatResponse, EncounterRequest
 from providers import OllamaProvider, OpenAIProvider
 from guardrails import ContentSafetyGuard, GuardrailAction, PIIGuard, JailbreakGuard
+from database import engine, get_session
+from clinical.db_models import Encounter
 
 
-app = FastAPI(title="AI Gateway")
+@asynccontextmanager
+async def lifespan(app):
+   yield
+   await engine.dispose()
+
+app = FastAPI(title="AI Gateway", lifespan=lifespan)
 
 # Connect to Redis using environment variables (with fallback for local dev)
 redis_host = os.getenv("APP_REDIS_HOST", "localhost")
@@ -236,3 +245,15 @@ async def chat_completions(request: ChatRequest) -> ChatResponse:
       status_code=503,
       detail=f"All providers failed.  Last error: {str(last_error)}"
    )
+
+@app.post("/v1/encounters")
+async def create_encounter(request: EncounterRequest, session=Depends(get_session)):
+      encounter = Encounter(
+         patient_id=request.patient_id,
+         specialty=request.specialty,
+         provider_npi=request.provider_npi,
+         encounter_type=request.encounter_type
+      )
+      session.add(encounter)
+      await session.commit()
+      return {"id": str(encounter.id), "status": encounter.status}

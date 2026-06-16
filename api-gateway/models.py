@@ -39,3 +39,9 @@ class ChatResponse(BaseModel):
    choices: list[ChatChoice]                 # List of responses
    usage: Optional[Usage] = None             # Token count for cost tracking
 
+class EncounterRequest(BaseModel):
+   patient_id: str
+   specialty: str
+   provider_npi: Optional[str] = None
+   encounter_type: str = "ambulatory"
+
