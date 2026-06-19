@@ -1,0 +1,8 @@
+{
+    "id": "card-001",
+    "speciality": "cardiology",
+    "encounter_type": "follow-up",
+    "note_format": "soap",
+    "source": "synthetic",
+    "transcript": "Doctor: Good morning Mrs. Chen, how have you been feeling since we adjusted your metoprolol dosage last month? Patient: Much better actually, the palpitations have really decreased. I'm still getting them maybe once or twice a week but nothing like before. Doctor: That's good progress. Any dizziness or lightheadedness with the higher dose? Patient: A little when I stand up quickly but it passes right away. Doctor: That's a mild orthostatic effect, we'll keep an eye on it. Let me check your blood pressure today. Okay one thirty two over seventy eight, that's looking well controlled. Heart rate is sixty four, nice and steady. Patient: My daughter is worried about me taking a beta blocker long term. Are there side effects I should watch for? Doctor: At this dose the main things to watch for are fatigue, cold hands or feet, and the dizziness you mentioned. The benefit of rate control far outweighs those risks in your case given the atrial fibrillation. Speaking of which, are you still taking the apixaban? Patient: Yes twice a day, I haven't missed any doses. Doctor: Excellent. Your last echo showed preserved ejection fraction at fifty five percent which is normal. I'd like to repeat the echo in six months and get a Holter monitor to see how the rate control looks over twenty four hours. Any questions? Patient: No I think that covers everything, thank you doctor."
+}
