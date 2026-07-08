@@ -247,31 +247,37 @@ class PHIGuard(GuardrailBase):
         
     def _mask_full(self, match: PHIMatch) -> str:
         """Replace the value with a type label: '[REDACTED_MRN]'."""
-        return f"[REDACTED_MRN_{match.phi_type}]"
+        return f"[REDACTED_{match.phi_type}]"
     
     def _mask_partial(self, match: PHIMatch) -> str:
-        """
-        Show trailing characters, mask the rest.
+            """
+            Show trailing characters for conventionally-safe types, full
+            label otherwise.
 
-        E.g. '123-45-6789' -> '***-**-6789'
-             'user@email.com' -> '****@email.com'
-        """
-        text = match.matched_text
+            Last-4 reveal is limited to SSN, credit card, and email, where
+            partial display is an established convention. Structured PHI
+            identifiers (MRN, account, device, license, health plan) fall
+            back to the full label: revealing trailing chars of an MRN is
+            exposure without benefit.
 
-        if match.phi_type == "EMAIL":
-            local, domain = text.split("@", 1)
-            return f"{'*' * len(local)@{domain}}"
-        
-        if match.phi_type == "SSN":
-            return f"***-**-{text[-4]}"
-        
-        if match.phi_type == "CREDIT_CARD":
-            return f"****-****-****-{text[-4:]}"
-        
-        # Default: show last 4 if long enough, else mask entirely
-        if len(text) <= 4:
-            return '*' * len(text)
-        return '*' * (len(text) -4) + text[-4:]
+            E.g. '123-45-6789' -> '***-**-6789'
+                'user@email.com' -> '****@email.com'
+                'AB1234567' (MRN) -> '[REDACTED_MRN]'
+            """
+            text = match.matched_text
+
+            if match.phi_type == "EMAIL":
+                local, domain = text.split("@", 1)
+                return f"{'*' * len(local)}@{domain}"
+
+            if match.phi_type == "SSN":
+                return f"***-**-{text[-4:]}"
+
+            if match.phi_type == "CREDIT_CARD":
+                return f"****-****-****-{text[-4:]}"
+
+            # Everything else (structured PHI): full label, no trailing reveal
+            return self._mask_full(match)
     
     def _mask_hash(self, match: PHIMatch) -> str:
         """
