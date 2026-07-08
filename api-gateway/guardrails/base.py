@@ -24,6 +24,8 @@ class ThreatCategory(str, Enum):
     TERRORISM = "terrorism"
     PROMPT_INJECTION = "prompt_injection"
     OFFENSIVE_LANGUAGE = "offensive_language"
+    PII = "pii"
+    PHI = "phi"
 
 
 class Severity(str, Enum):

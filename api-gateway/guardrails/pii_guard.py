@@ -111,12 +111,12 @@ class PIIGuard(GuardrailBase):
 
         return GuardrailResult(
             passed=(action != GuardrailAction.BLOCK),
-            category=ThreatCategory.CHILD_SAFETY if "SSN" in found_types else None,
+            category=ThreatCategory.PII,
             severity=worst_severity,
             action=action,
             message=summary,
             confidence=1.0,
-            # masked_text needs to be add to the GuardRailResult dataclass
+            masked_text=masked_text,
         )
     
     def _extract_text(self, request: ChatRequest) -> str:
